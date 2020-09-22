@@ -19,6 +19,9 @@ jobs:
       with:
         dotnet-version: 3.1.402
     
+    - name: Install dotnet tools
+      run: dotnet tool restore
+      
     - name: Install dependencies
       run: dotnet restore ./eShopOnWeb.sln
     
@@ -31,3 +34,27 @@ jobs:
     - name: Publish site
       working-directory: ./src/Web
       run: dotnet publish -c $build_config -o ../../web_publish
+    
+    - name: Catalog SQL Script
+      run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
+    
+    - name: Identity SQL Script
+      run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
+    
+    - name: Upload web site
+      uses: actions/upload-artifact@v2.1.4
+      with:
+        name: web_site
+        path: web_publish
+    
+    - name: Upload ARM
+      uses: actions/upload-artifact@v2
+      with:
+        name: arm_template
+        path: arm
+    
+    - name: Upload scripts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sql_scripts
+        path: ./scripts
