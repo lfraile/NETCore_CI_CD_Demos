@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      build_config: Release
+
     steps:
     - uses: actions/checkout@v2
       
@@ -20,7 +23,11 @@ jobs:
       run: dotnet restore ./eShopOnWeb.sln
     
     - name: Build
-      run: dotnet build ./eShopOnWeb.sln --configuration Release --no-restore
+      run: dotnet build ./eShopOnWeb.sln --configuration $build_config --no-restore
     
     - name: Test
-      run: dotnet test ./eShopOnWeb.sln --configuration Release --no-restore
+      run: dotnet test ./eShopOnWeb.sln --configuration $build_config --no-restore
+    
+    - name: Publish site
+      working-directory: ./src/Web
+      run: dotnet publish -c $build_config -o ../../web_publish
