@@ -1,0 +1,88 @@
+name: CI/CD .NET Core Docker
+
+on:
+  workflow_dispatch:      
+  push:
+      branches:
+          - docker
+env:
+  registry_name: lfraile.azurecr.io
+  repository_name: eshop-web
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:    
+      - uses: actions/checkout@v2
+      
+      - name: Build docker image
+        uses: docker/build-push-action@v1.1.1
+        with:
+          registry: ${{ env.registry_name }}
+          username: ${{ secrets.ACR_USER_NAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+          repository: ${{ env.repository_name }}
+          tags: ${{ github.run_number }}
+          path: .
+          dockerfile: src/Web/Dockerfile
+          add_git_labels: true
+          
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.402
+
+      - name: Install dotnet tools
+        run: dotnet tool restore
+
+      - name: Catalog SQL Script
+        run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
+
+      - name: Identity SQL Script
+        run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
+
+      - name: Upload scripts
+        uses: actions/upload-artifact@v2
+        with:
+          name: sql_scripts
+          path: ./scripts
+
+      - name: Upload ARM
+        uses: actions/upload-artifact@v2
+        with:
+          name: arm_template
+          path: arm
+
+  deploy:       
+    needs: build
+    runs-on: windows-latest  
+    steps:
+      
+    - name: Download scripts
+      uses: actions/download-artifact@v2
+      with:
+        name: sql_scripts
+        path: sql_scripts
+
+    - name: Download arm
+      uses: actions/download-artifact@v2
+      with:
+        name: arm_template
+        path: arm_template
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy Azure Resource Manager (ARM) Template
+      uses: Azure/arm-deploy@v1
+      with:        
+        scope: resourcegroup
+        subscriptionId: '3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6'        
+        resourceGroupName: 'NetCore_GIthubCI_CD_RG'
+        template: arm_template/netcore_rg_arm.json       
+        deploymentMode: Incremental
+        deploymentName: deploy-docker-${{ github.run_number  }}
+        parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.run_number }}
+       
