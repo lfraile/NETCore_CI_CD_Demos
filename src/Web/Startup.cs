@@ -162,6 +162,7 @@ namespace Microsoft.eShopWeb.Web
             services.AddBlazorServices();
 
             _services = services; // used to debug registered services
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 
 
