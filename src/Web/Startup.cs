@@ -26,16 +26,19 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using BlazorShared;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 
 namespace Microsoft.eShopWeb.Web
 {
     public class Startup
     {
         private IServiceCollection _services;
+        private readonly IWebHostEnvironment _environment;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
         public IConfiguration Configuration { get; }
@@ -43,7 +46,7 @@ namespace Microsoft.eShopWeb.Web
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             // use in-memory database
-           // ConfigureInMemoryDatabases(services);
+            // ConfigureInMemoryDatabases(services);
 
             // use real database
             ConfigureProductionServices(services);
@@ -144,7 +147,7 @@ namespace Microsoft.eShopWeb.Web
                 config.Path = "/allservices";
             });
 
-            
+
             var baseUrlConfig = new BaseUrlConfiguration();
             Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
             services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
@@ -162,7 +165,16 @@ namespace Microsoft.eShopWeb.Web
             services.AddBlazorServices();
 
             _services = services; // used to debug registered services
-            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
+
+            var aiOptions = new ApplicationInsightsServiceOptions();
+            aiOptions.InstrumentationKey = Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"];
+
+            if (_environment.IsDevelopment())
+            {
+                aiOptions.DeveloperMode = _environment.IsDevelopment();
+            }
+
+            services.AddApplicationInsightsTelemetry(aiOptions);
         }
 
 
