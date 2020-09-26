@@ -148,13 +148,13 @@
       "apiVersion": "2018-02-01",
       "name": "[parameters('serverfarms_netcoregithubplan_name')]",
       "location": "West Europe",
-      "sku": {
-        "name": "P1v2",
-        "tier": "PremiumV2",
-        "size": "P1v2",
-        "family": "Pv2",
-        "capacity": 1
-      },
+   "sku": {
+                "name": "S1",
+                "tier": "Standard",
+                "size": "S1",
+                "family": "S",
+                "capacity": 1
+            },
       "kind": "app",
       "properties": {
         "perSiteScaling": false,
