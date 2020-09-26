@@ -304,8 +304,7 @@
             },
             {
               "name": "XDT_MicrosoftApplicationInsights_PreemptSdk",
-              "value": "1",
-              "slotSetting": true
+              "value": "disabled"
             }
           ]
         }

@@ -123,12 +123,12 @@ jobs:
         connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
         sql-file: sql_scripts/identity.sql
 
-    - name: Annotate deployment
-      uses: wictorwilen/application-insights-action@v1
-      id: annotation
-      with:
-        applicationId: ${{ secrets.AI_APP_ID }}
-        apiKey: ${{secrets.AI_API_KEY}}
-        releaseName: ${{ github.event_name }}
-        message: ${{ github.event.head_commit.message }}
-        actor: ${{ github.actor }}
+    # - name: Annotate deployment
+    #   uses: wictorwilen/application-insights-action@v1
+    #   id: annotation
+    #   with:
+    #     applicationId: ${{ secrets.AI_APP_ID }}
+    #     apiKey: ${{secrets.AI_API_KEY}}
+    #     releaseName: ${{ github.event_name }}
+    #     message: ${{ github.event.head_commit.message }}
+    #     actor: ${{ github.actor }}
