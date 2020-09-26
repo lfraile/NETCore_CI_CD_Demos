@@ -268,48 +268,39 @@
             },
             {
               "name": "APPINSIGHTS_PROFILERFEATURE_VERSION",
-              "value": "1.0.0",
-              "slotSetting": true
+              "value": "disabled"//"1.0.0"
             },
             {
               "name": "APPINSIGHTS_SNAPSHOTFEATURE_VERSION",
-              "value": "disabled",
-              "slotSetting": true
+              "value": "disabled"
             },
             {
               "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
               "value": "[concat('InstrumentationKey=',reference(resourceId('microsoft.insights/components/', parameters('sites_netcoregithub_name')), '2018-05-01-preview').InstrumentationKey,';IngestionEndpoint=https://westeurope-1.in.applicationinsights.azure.com/')]",
-              "slotSetting": false
             },
             {
               "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
-              "value": "~2",
-              "slotSetting": true
+              "value": "~2"
             },
             {
               "name": "DiagnosticServices_EXTENSION_VERSION",
-              "value": "~3",
-              "slotSetting": true
+              "value": "~3"
             },
             {
               "name": "InstrumentationEngine_EXTENSION_VERSION",
-              "value": "disabled",
-              "slotSetting": true
+              "value": "disabled"
             },
             {
               "name": "SnapshotDebugger_EXTENSION_VERSION",
-              "value": "disabled",
-              "slotSetting": true
+              "value": "disabled"
             },
             {
               "name": "XDT_MicrosoftApplicationInsights_BaseExtensions",
-              "value": "disabled",
-              "slotSetting": true
+              "value": "disabled"
             },
             {
               "name": "XDT_MicrosoftApplicationInsights_Mode",
-              "value": "recommended",
-              "slotSetting": true
+              "value": "recommended"
             },
             {
               "name": "XDT_MicrosoftApplicationInsights_PreemptSdk",
