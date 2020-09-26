@@ -4,6 +4,8 @@ using Microsoft.eShopWeb.Web.Services;
 using Microsoft.eShopWeb.Web.ViewModels;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Pages
@@ -25,9 +27,16 @@ namespace Microsoft.eShopWeb.Web.Pages
 
         public async Task OnGet(CatalogIndexViewModel catalogModel, int? pageId)
         {
-            _telemetryClient.TrackEvent("Catalog event");
-            _logger.LogWarning("Catalog event {ticks}", DateTime.UtcNow.Ticks);
+            var stopWatchGetCatalog = new Stopwatch();
+            stopWatchGetCatalog.Start();
+            _telemetryClient.TrackEvent("Catalog event", new Dictionary<string, string> { { "KeyTest", "ValueTest" } });
+            
+            _logger.LogWarning("Catalog log warning {ticks}", DateTime.UtcNow.Ticks);
             CatalogModel = await _catalogViewModelService.GetCatalogItems(pageId ?? 0, Constants.ITEMS_PER_PAGE, catalogModel.BrandFilterApplied, catalogModel.TypesFilterApplied);
+
+            stopWatchGetCatalog.Stop();
+            _telemetryClient.TrackMetric("Catalog metric", stopWatchGetCatalog.ElapsedMilliseconds, new Dictionary<string, string> { { "KeyTest", "ValueTest" } });
         }
+
     }
 }
