@@ -35,7 +35,7 @@ namespace Microsoft.eShopWeb.Web.Pages
             CatalogModel = await _catalogViewModelService.GetCatalogItems(pageId ?? 0, Constants.ITEMS_PER_PAGE, catalogModel.BrandFilterApplied, catalogModel.TypesFilterApplied);
 
             stopWatchGetCatalog.Stop();
-            _telemetryClient.TrackMetric("Catalog metric", stopWatchGetCatalog.ElapsedMilliseconds, new Dictionary<string, string> { { "KeyTest", "ValueTest" } });
+            _telemetryClient.GetMetric("Catalog metric").TrackValue(stopWatchGetCatalog.ElapsedMilliseconds);
         }
 
     }
