@@ -177,7 +177,7 @@ namespace Microsoft.eShopWeb.Web
             }
 
             services.AddApplicationInsightsTelemetry(aiOptions);
-            services.AddApplicationInsightsTelemetryProcessor<DemoTelemetryProcessor>();
+            //services.AddApplicationInsightsTelemetryProcessor<DemoTelemetryProcessor>();
 
             //services.AddSingleton<ITelemetryInitializer, DemoTelemetryInitializer>();
         }
