@@ -29,6 +29,7 @@ using BlazorShared;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.eShopWeb.Web.CustomTelemetry;
+using Microsoft.ApplicationInsights.SnapshotCollector;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -178,7 +179,7 @@ namespace Microsoft.eShopWeb.Web
 
             services.AddApplicationInsightsTelemetry(aiOptions);
             //services.AddApplicationInsightsTelemetryProcessor<DemoTelemetryProcessor>();
-
+            services.AddSnapshotCollector((configuration) => Configuration.Bind(nameof(SnapshotCollectorConfiguration), configuration));
             //services.AddSingleton<ITelemetryInitializer, DemoTelemetryInitializer>();
         }
 
