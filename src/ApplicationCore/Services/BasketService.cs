@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using System.Runtime.Serialization;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
@@ -49,6 +50,11 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
                 {
                     if (_logger != null) _logger.LogInformation($"Updating quantity of item ID:{item.Id} to {quantity}.");
                     item.SetQuantity(quantity);
+
+                    if(quantity >= 5)
+                    {
+                        throw new OpsNoMoreThanFourItems($"No more than 4 items of {item.Id} allowed");
+                    }
                 }
             }
             basket.RemoveEmptyItems();
@@ -75,6 +81,26 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             }
             await _basketRepository.UpdateAsync(userBasket);
             await _basketRepository.DeleteAsync(anonymousBasket);
+        }
+    }
+
+    [System.Serializable]
+    internal class OpsNoMoreThanFourItems : System.Exception
+    {
+        public OpsNoMoreThanFourItems()
+        {
+        }
+
+        public OpsNoMoreThanFourItems(string message) : base(message)
+        {
+        }
+
+        public OpsNoMoreThanFourItems(string message, System.Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected OpsNoMoreThanFourItems(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
         }
     }
 }
