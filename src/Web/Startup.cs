@@ -27,6 +27,8 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using BlazorShared;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.eShopWeb.Web.CustomTelemetry;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -175,6 +177,9 @@ namespace Microsoft.eShopWeb.Web
             }
 
             services.AddApplicationInsightsTelemetry(aiOptions);
+            services.AddApplicationInsightsTelemetryProcessor<DemoTelemetryProcessor>();
+
+            //services.AddSingleton<ITelemetryInitializer, DemoTelemetryInitializer>();
         }
 
 
