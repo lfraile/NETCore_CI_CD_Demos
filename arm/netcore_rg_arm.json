@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "sites_netcoregithub_name": {
@@ -27,6 +27,95 @@
       "location": "westeurope",
       "properties": {
         "ApplicationId": "[parameters('sites_netcoregithub_name')]"
+      }
+    },
+    {
+      "type": "microsoft.insights/webtests",
+      "apiVersion": "2015-05-01",
+      "name": "[concat(parameters('sites_netcoregithub_name'),'-ping-1')]",
+      "location": "westeurope",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
+        "[resourceId('Microsoft.Insights/components/', parameters('sites_netcoregithub_name'))]",
+        "[resourceId('Microsoft.Web/sites', parameters('sites_netcoregithub_name'))]"
+      ],
+      "tags": {
+        "hidden-link:/subscriptions/3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6/resourceGroups/NetCore_GIthubCI_CD_RG/providers/microsoft.insights/components/netcoregithub": "Resource"
+      },
+      "properties": {
+        "SyntheticMonitorId": "[concat(parameters('sites_netcoregithub_name'),'-2')]",
+        "Name": "Basic ping 2",
+        "Enabled": true,
+        "Frequency": 300,
+        "Timeout": 120,
+        "Kind": "ping",
+        "RetryEnabled": true,
+        "Locations": [
+          {
+            "Id": "emea-nl-ams-azr"
+          },
+          {
+            "Id": "us-ca-sjc-azr"
+          },
+          {
+            "Id": "emea-ru-msa-edge"
+          },
+          {
+            "Id": "emea-gb-db3-azr"
+          },
+          {
+            "Id": "emea-ch-zrh-edge"
+          },
+          {
+            "Id": "emea-fr-pra-edge"
+          }
+        ],
+        "Configuration": {
+          "WebTest": "<WebTest         Name=\"Basic ping 2\"         Id=\"d37bf2a4-1396-482c-adf9-b37d5e567b65\"         Enabled=\"True\"         CssProjectStructure=\"\"         CssIteration=\"\"         Timeout=\"120\"         WorkItemIds=\"\"         xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\"         Description=\"\"         CredentialUserName=\"\"         CredentialPassword=\"\"         PreAuthenticate=\"True\"         Proxy=\"default\"         StopOnError=\"False\"         RecordedResultFile=\"\"         ResultsLocale=\"\">        <Items>        <Request         Method=\"GET\"         Guid=\"a6f85cdd-5d63-3d70-18cb-4bb7ca4254f3\"         Version=\"1.1\"         Url=\"https://netcoregithub.azurewebsites.net/\"         ThinkTime=\"0\"         Timeout=\"120\"         ParseDependentRequests=\"True\"         FollowRedirects=\"True\"         RecordResult=\"True\"         Cache=\"False\"         ResponseTimeGoal=\"0\"         Encoding=\"utf-8\"         ExpectedHttpStatusCode=\"200\"         ExpectedResponseUrl=\"\"         ReportingName=\"\"         IgnoreHttpStatusCode=\"False\" />        </Items>        </WebTest>"
+        }
+      }
+    },
+    {
+      "type": "microsoft.insights/webtests",
+      "apiVersion": "2015-05-01",
+      "name": "[concat(parameters('sites_netcoregithub_name'),'-ping-2')]",
+      "location": "westeurope",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
+        "[resourceId('Microsoft.Insights/components/', parameters('sites_netcoregithub_name'))]",
+        "[resourceId('Microsoft.Web/sites', parameters('sites_netcoregithub_name'))]"
+      ],
+      "tags": {
+        "hidden-link:/subscriptions/3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6/resourceGroups/NetCore_GIthubCI_CD_RG/providers/microsoft.insights/components/netcoregithub": "Resource"
+      },
+      "properties": {
+        "SyntheticMonitorId": "[concat(parameters('sites_netcoregithub_name'),'-2')]",
+        "Name": "Basic ping 2",
+        "Enabled": true,
+        "Frequency": 300,
+        "Timeout": 120,
+        "Kind": "ping",
+        "RetryEnabled": true,
+        "Locations": [
+          {
+            "Id": "us-ca-sjc-azr"
+          },
+          {
+            "Id": "us-tx-sn1-azr"
+          },
+          {
+            "Id": "us-il-ch1-azr"
+          },
+          {
+            "Id": "us-va-ash-azr"
+          },
+          {
+            "Id": "us-fl-mia-edge"
+          }
+        ],
+        "Configuration": {
+          "WebTest": "<WebTest         Name=\"Basic ping 2\"         Id=\"d37bf2a4-1396-482c-adf9-b37d5e567b65\"         Enabled=\"True\"         CssProjectStructure=\"\"         CssIteration=\"\"         Timeout=\"120\"         WorkItemIds=\"\"         xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\"         Description=\"\"         CredentialUserName=\"\"         CredentialPassword=\"\"         PreAuthenticate=\"True\"         Proxy=\"default\"         StopOnError=\"False\"         RecordedResultFile=\"\"         ResultsLocale=\"\">        <Items>        <Request         Method=\"GET\"         Guid=\"a6f85cdd-5d63-3d70-18cb-4bb7ca4254f3\"         Version=\"1.1\"         Url=\"https://netcoregithub.azurewebsites.net/\"         ThinkTime=\"0\"         Timeout=\"120\"         ParseDependentRequests=\"True\"         FollowRedirects=\"True\"         RecordResult=\"True\"         Cache=\"False\"         ResponseTimeGoal=\"0\"         Encoding=\"utf-8\"         ExpectedHttpStatusCode=\"200\"         ExpectedResponseUrl=\"\"         ReportingName=\"\"         IgnoreHttpStatusCode=\"False\" />        </Items>        </WebTest>"
+        }
       }
     },
     {
@@ -178,36 +267,54 @@
               "value": "[reference(resourceId('microsoft.insights/components/', parameters('sites_netcoregithub_name')), '2018-05-01-preview').InstrumentationKey]"
             },
             {
-              "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
-              "value": "~2"
-            },
-            {
-              "name": "XDT_MicrosoftApplicationInsights_Mode",
-              "value": "default"
-            },
-            {
-              "name": "DiagnosticServices_EXTENSION_VERSION",
-              "value": "disabled"
-            },
-            {
               "name": "APPINSIGHTS_PROFILERFEATURE_VERSION",
-              "value": "disabled"
+              "value": "1.0.0",
+              "slotSetting": true
             },
             {
               "name": "APPINSIGHTS_SNAPSHOTFEATURE_VERSION",
-              "value": "disabled"
+              "value": "disabled",
+              "slotSetting": true
+            },
+            {
+              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+              "value": "[concat('InstrumentationKey=',reference(resourceId('microsoft.insights/components/', parameters('sites_netcoregithub_name')), '2018-05-01-preview').InstrumentationKey,';IngestionEndpoint=https://westeurope-1.in.applicationinsights.azure.com/')]",
+              "slotSetting": false
+            },
+            {
+              "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+              "value": "~2",
+              "slotSetting": true
+            },
+            {
+              "name": "DiagnosticServices_EXTENSION_VERSION",
+              "value": "~3",
+              "slotSetting": true
             },
             {
               "name": "InstrumentationEngine_EXTENSION_VERSION",
-              "value": "disabled"
+              "value": "disabled",
+              "slotSetting": true
             },
             {
               "name": "SnapshotDebugger_EXTENSION_VERSION",
-              "value": "disabled"
+              "value": "disabled",
+              "slotSetting": true
             },
             {
               "name": "XDT_MicrosoftApplicationInsights_BaseExtensions",
-              "value": "disabled"
+              "value": "disabled",
+              "slotSetting": true
+            },
+            {
+              "name": "XDT_MicrosoftApplicationInsights_Mode",
+              "value": "recommended",
+              "slotSetting": true
+            },
+            {
+              "name": "XDT_MicrosoftApplicationInsights_PreemptSdk",
+              "value": "1",
+              "slotSetting": true
             }
           ]
         }
