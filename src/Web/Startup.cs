@@ -179,7 +179,7 @@ namespace Microsoft.eShopWeb.Web
 
             services.AddApplicationInsightsTelemetry(aiOptions);
             //services.AddApplicationInsightsTelemetryProcessor<DemoTelemetryProcessor>();
-            //services.AddSnapshotCollector((configuration) => Configuration.Bind(nameof(SnapshotCollectorConfiguration), configuration));
+          
             //services.AddSingleton<ITelemetryInitializer, DemoTelemetryInitializer>();
         }
 
