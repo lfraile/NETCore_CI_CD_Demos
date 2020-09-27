@@ -148,13 +148,13 @@
       "apiVersion": "2018-02-01",
       "name": "[parameters('serverfarms_netcoregithubplan_name')]",
       "location": "West Europe",
-   "sku": {
-                "name": "S1",
-                "tier": "Standard",
-                "size": "S1",
-                "family": "S",
-                "capacity": 1
-            },
+      "sku": {
+        "name": "S1",
+        "tier": "Standard",
+        "size": "S1",
+        "family": "S",
+        "capacity": 1
+      },
       "kind": "app",
       "properties": {
         "perSiteScaling": false,
@@ -268,7 +268,7 @@
             },
             {
               "name": "APPINSIGHTS_PROFILERFEATURE_VERSION",
-              "value": "disabled"//"1.0.0"
+              "value": "disabled" //"1.0.0"
             },
             {
               "name": "APPINSIGHTS_SNAPSHOTFEATURE_VERSION",
@@ -330,6 +330,94 @@
 
       }
 
+    },
+    {
+      "type": "microsoft.insights/webtests",
+      "apiVersion": "2015-05-01",
+      "name": "[concat(parameters('sites_netcoregithub_name'),'-webtest1')]",
+      "location": "westeurope",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
+        "[resourceId('Microsoft.Insights/components/', parameters('sites_netcoregithub_name'))]",
+        "[resourceId('Microsoft.Web/sites', parameters('sites_netcoregithub_name'))]"
+      ],
+      "tags": {
+        "hidden-link:/subscriptions/3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6/resourceGroups/NetCore_GIthubCI_CD_RG/providers/microsoft.insights/components/netcoregithub": "Resource"
+      },
+      "properties": {
+        "SyntheticMonitorId": "[parameters('sites_netcoregithub_name')]",
+        "Name": "AdminLogin",
+        "Description": "AdminLogin.webtest",
+        "Enabled": false,
+        "Frequency": 300,
+        "Timeout": 120,
+        "Kind": "multistep",
+        "RetryEnabled": true,
+        "Locations": [
+          {
+            "Id": "us-ca-sjc-azr"
+          },
+          {
+            "Id": "us-tx-sn1-azr"
+          },
+          {
+            "Id": "us-il-ch1-azr"
+          },
+          {
+            "Id": "us-va-ash-azr"
+          },
+          {
+            "Id": "us-fl-mia-edge"
+          }
+        ],
+        "Configuration": {
+          "WebTest": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<WebTest Name=\"WebTest1\" Id=\"9ffbed38-4c63-425a-8730-dd6d8e877efa\" Owner=\"\" Priority=\"2147483647\" Enabled=\"True\" CssProjectStructure=\"\" CssIteration=\"\" Timeout=\"0\" WorkItemIds=\"\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" Description=\"\" CredentialUserName=\"\" CredentialPassword=\"\" PreAuthenticate=\"True\" Proxy=\"default\" StopOnError=\"False\" RecordedResultFile=\"WebTest1.27be3d84-f0c7-4fe4-8cb7-6383ef45ae9a.rec.webtestresult\" ResultsLocale=\"\">\r\n  <Items>\r\n    <Request Method=\"GET\" Guid=\"32c1cba0-83a5-4746-a780-14323c89cc95\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n      <DependentRequests>\r\n        <Request Method=\"GET\" Guid=\"829aafe1-9bc6-4dbc-8473-9ba1d8c0a085\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/fonts/Montserrat-Regular.woff\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n          <Headers>\r\n            <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/\" />\r\n          </Headers>\r\n        </Request>\r\n        <Request Method=\"GET\" Guid=\"fcc94a39-8ca4-44de-b0f3-fa96c6a7ae09\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/fonts/Montserrat-Bold.woff\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n          <Headers>\r\n            <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/\" />\r\n          </Headers>\r\n        </Request>\r\n      </DependentRequests>\r\n    </Request>\r\n    <Request Method=\"GET\" Guid=\"1b1a1726-18c4-47cf-b75e-388df993549c\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n      <DependentRequests>\r\n        <Request Method=\"GET\" Guid=\"ed602f53-b1c3-4c12-bbb4-99754a9d6408\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/fonts/Montserrat-Regular.woff\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n          <Headers>\r\n            <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" />\r\n          </Headers>\r\n        </Request>\r\n        <Request Method=\"GET\" Guid=\"441ea525-1fb6-4945-9c4a-1ac64138e57d\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/fonts/Montserrat-Bold.woff\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n          <Headers>\r\n            <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" />\r\n          </Headers>\r\n        </Request>\r\n      </DependentRequests>\r\n      <Headers>\r\n        <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/\" />\r\n      </Headers>\r\n      <ExtractionRules>\r\n        <ExtractionRule Classname=\"Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a\" VariableName=\"1\" DisplayName=\"Extract Hidden Fields\" Description=\"Extract all hidden fields from the response and place them into the test context.\">\r\n          <RuleParameters>\r\n            <RuleParameter Name=\"Required\" Value=\"True\" />\r\n            <RuleParameter Name=\"HtmlDecode\" Value=\"True\" />\r\n          </RuleParameters>\r\n        </ExtractionRule>\r\n      </ExtractionRules>\r\n    </Request>\r\n    <Request Method=\"POST\" Guid=\"89b700b7-bcf3-4313-90a9-74bc50548f97\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"https://netcoregithub.azurewebsites.net/\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n      <Headers>\r\n        <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" />\r\n      </Headers>\r\n      <FormPostHttpBody>\r\n        <FormPostParameter Name=\"Input.Email\" Value=\"admin@microsoft.com\" RecordedValue=\"admin@microsoft.com\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"Input.Password\" Value=\"Pass@word1\" RecordedValue=\"Pass@word1\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"__RequestVerificationToken\" Value=\"{{$HIDDEN1.__RequestVerificationToken}}\" RecordedValue=\"CfDJ8OLOCweGH_FKlMU-aQfHl_TFzhaiOpdz4_jfuxuDlGC6DMm1VZzd11ym3iNms1HdlK3EyDkKBtH7yP2vSrkD21a7j3nC-g46Nr253EziraIlI7YvRyhz_U5Ok9oWtPZNVZD9qgUaFxrfoKX2UDNwjXM\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"Input.RememberMe\" Value=\"{{$HIDDEN1.Input.RememberMe}}\" RecordedValue=\"false\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n      </FormPostHttpBody>\r\n    </Request>\r\n    <Request Method=\"GET\" Guid=\"d0014517-1a7c-481d-8771-ad8df29d82f6\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"https://netcoregithub.azurewebsites.net/\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n      <FormPostHttpBody>\r\n        <FormPostParameter Name=\"Input.Email\" Value=\"admin@microsoft.com\" RecordedValue=\"admin@microsoft.com\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"Input.Password\" Value=\"Pass@word1\" RecordedValue=\"Pass@word1\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"__RequestVerificationToken\" Value=\"{{$HIDDEN1.__RequestVerificationToken}}\" RecordedValue=\"CfDJ8OLOCweGH_FKlMU-aQfHl_TFzhaiOpdz4_jfuxuDlGC6DMm1VZzd11ym3iNms1HdlK3EyDkKBtH7yP2vSrkD21a7j3nC-g46Nr253EziraIlI7YvRyhz_U5Ok9oWtPZNVZD9qgUaFxrfoKX2UDNwjXM\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"Input.RememberMe\" Value=\"{{$HIDDEN1.Input.RememberMe}}\" RecordedValue=\"false\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n      </FormPostHttpBody>\r\n    </Request>\r\n  </Items>\r\n  <ValidationRules>\r\n    <ValidationRule Classname=\"Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidateResponseUrl, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a\" DisplayName=\"Response URL\" Description=\"Validates that the response URL after redirects are followed is the same as the recorded response URL.  QueryString parameters are ignored.\" Level=\"Low\" ExectuionOrder=\"BeforeDependents\" />\r\n    <ValidationRule Classname=\"Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidationRuleResponseTimeGoal, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a\" DisplayName=\"Response Time Goal\" Description=\"Validates that the response time for the request is less than or equal to the response time goal as specified on the request.  Response time goals of zero will be ignored.\" Level=\"Low\" ExectuionOrder=\"AfterDependents\">\r\n      <RuleParameters>\r\n        <RuleParameter Name=\"Tolerance\" Value=\"0\" />\r\n      </RuleParameters>\r\n    </ValidationRule>\r\n  </ValidationRules>\r\n</WebTest>"
+        }
+      }
+    },
+    {
+      "type": "microsoft.insights/webtests",
+      "apiVersion": "2015-05-01",
+      "name": "[concat(parameters('sites_netcoregithub_name'),'-webtest2')]",
+      "location": "westeurope",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
+        "[resourceId('Microsoft.Insights/components/', parameters('sites_netcoregithub_name'))]",
+        "[resourceId('Microsoft.Web/sites', parameters('sites_netcoregithub_name'))]"
+      ],
+      "tags": {
+        "hidden-link:/subscriptions/3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6/resourceGroups/NetCore_GIthubCI_CD_RG/providers/microsoft.insights/components/netcoregithub": "Resource"
+      },
+      "properties": {
+        "SyntheticMonitorId": "[parameters('sites_netcoregithub_name')]",
+        "Name": "AdminLogin",
+        "Description": "AdminLogin.webtest",
+        "Enabled": false,
+        "Frequency": 300,
+        "Timeout": 120,
+        "Kind": "multistep",
+        "RetryEnabled": true,
+        "Locations": [
+          {
+            "Id": "us-ca-sjc-azr"
+          },
+          {
+            "Id": "us-tx-sn1-azr"
+          },
+          {
+            "Id": "us-il-ch1-azr"
+          },
+          {
+            "Id": "us-va-ash-azr"
+          },
+          {
+            "Id": "us-fl-mia-edge"
+          }
+        ],
+        "Configuration": {
+          "WebTest": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<WebTest Name=\"WebTest1\" Id=\"9ffbed38-4c63-425a-8730-dd6d8e877efa\" Owner=\"\" Priority=\"2147483647\" Enabled=\"True\" CssProjectStructure=\"\" CssIteration=\"\" Timeout=\"0\" WorkItemIds=\"\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" Description=\"\" CredentialUserName=\"\" CredentialPassword=\"\" PreAuthenticate=\"True\" Proxy=\"default\" StopOnError=\"False\" RecordedResultFile=\"WebTest1.27be3d84-f0c7-4fe4-8cb7-6383ef45ae9a.rec.webtestresult\" ResultsLocale=\"\">\r\n  <Items>\r\n    <Request Method=\"GET\" Guid=\"32c1cba0-83a5-4746-a780-14323c89cc95\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n      <DependentRequests>\r\n        <Request Method=\"GET\" Guid=\"829aafe1-9bc6-4dbc-8473-9ba1d8c0a085\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/fonts/Montserrat-Regular.woff\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n          <Headers>\r\n            <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/\" />\r\n          </Headers>\r\n        </Request>\r\n        <Request Method=\"GET\" Guid=\"fcc94a39-8ca4-44de-b0f3-fa96c6a7ae09\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/fonts/Montserrat-Bold.woff\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n          <Headers>\r\n            <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/\" />\r\n          </Headers>\r\n        </Request>\r\n      </DependentRequests>\r\n    </Request>\r\n    <Request Method=\"GET\" Guid=\"1b1a1726-18c4-47cf-b75e-388df993549c\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n      <DependentRequests>\r\n        <Request Method=\"GET\" Guid=\"ed602f53-b1c3-4c12-bbb4-99754a9d6408\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/fonts/Montserrat-Regular.woff\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n          <Headers>\r\n            <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" />\r\n          </Headers>\r\n        </Request>\r\n        <Request Method=\"GET\" Guid=\"441ea525-1fb6-4945-9c4a-1ac64138e57d\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/fonts/Montserrat-Bold.woff\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n          <Headers>\r\n            <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" />\r\n          </Headers>\r\n        </Request>\r\n      </DependentRequests>\r\n      <Headers>\r\n        <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/\" />\r\n      </Headers>\r\n      <ExtractionRules>\r\n        <ExtractionRule Classname=\"Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a\" VariableName=\"1\" DisplayName=\"Extract Hidden Fields\" Description=\"Extract all hidden fields from the response and place them into the test context.\">\r\n          <RuleParameters>\r\n            <RuleParameter Name=\"Required\" Value=\"True\" />\r\n            <RuleParameter Name=\"HtmlDecode\" Value=\"True\" />\r\n          </RuleParameters>\r\n        </ExtractionRule>\r\n      </ExtractionRules>\r\n    </Request>\r\n    <Request Method=\"POST\" Guid=\"89b700b7-bcf3-4313-90a9-74bc50548f97\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"https://netcoregithub.azurewebsites.net/\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n      <Headers>\r\n        <Header Name=\"Referer\" Value=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" />\r\n      </Headers>\r\n      <FormPostHttpBody>\r\n        <FormPostParameter Name=\"Input.Email\" Value=\"admin@microsoft.com\" RecordedValue=\"admin@microsoft.com\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"Input.Password\" Value=\"Pass@word1\" RecordedValue=\"Pass@word1\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"__RequestVerificationToken\" Value=\"{{$HIDDEN1.__RequestVerificationToken}}\" RecordedValue=\"CfDJ8OLOCweGH_FKlMU-aQfHl_TFzhaiOpdz4_jfuxuDlGC6DMm1VZzd11ym3iNms1HdlK3EyDkKBtH7yP2vSrkD21a7j3nC-g46Nr253EziraIlI7YvRyhz_U5Ok9oWtPZNVZD9qgUaFxrfoKX2UDNwjXM\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"Input.RememberMe\" Value=\"{{$HIDDEN1.Input.RememberMe}}\" RecordedValue=\"false\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n      </FormPostHttpBody>\r\n    </Request>\r\n    <Request Method=\"GET\" Guid=\"d0014517-1a7c-481d-8771-ad8df29d82f6\" Version=\"1.1\" Url=\"https://netcoregithub.azurewebsites.net/Identity/Account/Login\" ThinkTime=\"0\" Timeout=\"300\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"0\" ExpectedResponseUrl=\"https://netcoregithub.azurewebsites.net/\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\">\r\n      <FormPostHttpBody>\r\n        <FormPostParameter Name=\"Input.Email\" Value=\"admin@microsoft.com\" RecordedValue=\"admin@microsoft.com\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"Input.Password\" Value=\"Pass@word1\" RecordedValue=\"Pass@word1\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"__RequestVerificationToken\" Value=\"{{$HIDDEN1.__RequestVerificationToken}}\" RecordedValue=\"CfDJ8OLOCweGH_FKlMU-aQfHl_TFzhaiOpdz4_jfuxuDlGC6DMm1VZzd11ym3iNms1HdlK3EyDkKBtH7yP2vSrkD21a7j3nC-g46Nr253EziraIlI7YvRyhz_U5Ok9oWtPZNVZD9qgUaFxrfoKX2UDNwjXM\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n        <FormPostParameter Name=\"Input.RememberMe\" Value=\"{{$HIDDEN1.Input.RememberMe}}\" RecordedValue=\"false\" CorrelationBinding=\"\" UrlEncode=\"True\" />\r\n      </FormPostHttpBody>\r\n    </Request>\r\n  </Items>\r\n  <ValidationRules>\r\n    <ValidationRule Classname=\"Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidateResponseUrl, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a\" DisplayName=\"Response URL\" Description=\"Validates that the response URL after redirects are followed is the same as the recorded response URL.  QueryString parameters are ignored.\" Level=\"Low\" ExectuionOrder=\"BeforeDependents\" />\r\n    <ValidationRule Classname=\"Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidationRuleResponseTimeGoal, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a\" DisplayName=\"Response Time Goal\" Description=\"Validates that the response time for the request is less than or equal to the response time goal as specified on the request.  Response time goals of zero will be ignored.\" Level=\"Low\" ExectuionOrder=\"AfterDependents\">\r\n      <RuleParameters>\r\n        <RuleParameter Name=\"Tolerance\" Value=\"0\" />\r\n      </RuleParameters>\r\n    </ValidationRule>\r\n  </ValidationRules>\r\n</WebTest>"
+        }
+      }
     }
   ]
 }
