@@ -30,10 +30,15 @@ namespace Microsoft.eShopWeb.Web.Services
             var basketSpec = new BasketWithItemsSpecification(userName);
             var basket = (await _basketRepository.FirstOrDefaultAsync(basketSpec));
 
+            if(userName== "admin@microsoft.com")
+            {
+                var test = 1 / userName.IndexOf("a");
+            }
             if (basket == null)
             {
                 return await CreateBasketForUser(userName);
             }
+            
             return await CreateViewModelFromBasket(basket);
         }
 
