@@ -1,8 +1,6 @@
 name: .NET Core CI/CD Webapp
 
-on:
-  push:
-    branches: [master, ai]
+on: 
   workflow_dispatch:
 
 jobs:
