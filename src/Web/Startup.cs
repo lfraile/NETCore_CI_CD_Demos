@@ -177,6 +177,7 @@ namespace Microsoft.eShopWeb.Web
                 aiOptions.DeveloperMode = _environment.IsDevelopment();
             }
 
+            services.AddSnapshotCollector((configuration) => Configuration.Bind(nameof(SnapshotCollectorConfiguration), configuration));
             services.AddApplicationInsightsTelemetry(aiOptions);
             //services.AddApplicationInsightsTelemetryProcessor<DemoTelemetryProcessor>();
           
