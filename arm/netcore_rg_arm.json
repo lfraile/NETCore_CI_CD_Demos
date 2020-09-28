@@ -45,7 +45,7 @@
       "properties": {
         "SyntheticMonitorId": "[concat(parameters('sites_netcoregithub_name'),'-2')]",
         "Name": "Basic ping 2",
-        "Enabled": true,
+        "Enabled": false,
         "Frequency": 300,
         "Timeout": 120,
         "Kind": "ping",
@@ -91,7 +91,7 @@
       "properties": {
         "SyntheticMonitorId": "[concat(parameters('sites_netcoregithub_name'),'-2')]",
         "Name": "Basic ping 2",
-        "Enabled": true,
+        "Enabled": false,
         "Frequency": 300,
         "Timeout": 120,
         "Kind": "ping",
