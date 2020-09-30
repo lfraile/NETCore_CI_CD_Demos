@@ -178,12 +178,11 @@
         "[resourceId('Microsoft.Sql/servers', parameters('servers_netcoregithub_name'))]"
       ],
       "sku": {
-        "name": "GP_S_Gen5",
-        "tier": "GeneralPurpose",
-        "family": "Gen5",
-        "capacity": 1
+        "name": "Standard",
+        "tier": "Standard",
+        "capacity": 10
       },
-      "kind": "v12.0,user,vcore,serverless",
+      "kind": "v12.0,user",
       "properties": {
         "collation": "SQL_Latin1_General_CP1_CI_AS",
         "maxSizeBytes": 1073741824,
@@ -191,9 +190,7 @@
         "zoneRedundant": false,
         "readScale": "Disabled",
         "readReplicaCount": 0,
-        "autoPauseDelay": 60,
-        "storageAccountType": "GRS",
-        "minCapacity": 0.5
+        "storageAccountType": "GRS"
       }
     },
     {
