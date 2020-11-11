@@ -1,10 +1,12 @@
 name: CI/CD .NET Core Docker
 
 on:
-  workflow_dispatch:      
   push:
       branches:
           - docker
+  
+  workflow_dispatch:
+  
 env:
   registry_name: lfraileacr.azurecr.io
   repository_name: eshop-web
