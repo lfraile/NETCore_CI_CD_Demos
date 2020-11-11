@@ -81,12 +81,12 @@ jobs:
       uses: Azure/arm-deploy@v1
       with:        
         scope: resourcegroup
-        subscriptionId: '3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6'        
+        subscriptionId: '${{ secrets.AZURE_SUB_ID }}'        
         resourceGroupName: 'NetCore_GIthubCI_CD_RG'
         template: arm_template/netcore_rg_arm.json       
         deploymentMode: Incremental
         deploymentName: deploy-docker-${{ github.run_number  }}
-        parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.run_number }}
+        parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubdckplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.run_number }}
        
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1
