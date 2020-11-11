@@ -6,7 +6,7 @@ on:
       branches:
           - docker
 env:
-  registry_name: lfraile.azurecr.io
+  registry_name: lfraileacr.azurecr.io
   repository_name: eshop-web
 
 jobs:
