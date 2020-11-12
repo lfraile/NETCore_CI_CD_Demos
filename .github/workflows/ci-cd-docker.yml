@@ -83,7 +83,7 @@ jobs:
         scope: resourcegroup
         subscriptionId: '${{ secrets.AZURE_SUB_ID }}'        
         resourceGroupName: 'NetCore_GithubCI_Docker_CD_RG'
-        template: arm_template/netcore_rg_arm.json       
+        template: arm_template/netcore_rg_arm_docker.json       
         deploymentMode: Incremental
         deploymentName: deploy-docker-${{ github.run_number  }}
         parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubdckplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.run_number }}
