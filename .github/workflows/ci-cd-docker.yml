@@ -82,7 +82,7 @@ jobs:
       with:        
         scope: resourcegroup
         subscriptionId: '${{ secrets.AZURE_SUB_ID }}'        
-        resourceGroupName: 'NetCore_GIthubCI_CD_RG'
+        resourceGroupName: 'NetCore_GithubCI_Docker_CD_RG'
         template: arm_template/netcore_rg_arm.json       
         deploymentMode: Incremental
         deploymentName: deploy-docker-${{ github.run_number  }}
