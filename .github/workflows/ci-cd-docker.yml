@@ -2,9 +2,7 @@ name: CI/CD .NET Core Docker
 
 on:
   push:
-      branches:
-          - docker
-  
+    branches: docker
   workflow_dispatch:
   
 env:
